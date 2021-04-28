@@ -1,0 +1,4 @@
+final_models/
+models/__pycache__
+*.swp
+*.pyc

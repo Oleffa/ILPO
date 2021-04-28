@@ -100,8 +100,19 @@ class ILPO():
             out_channels = int(targets.get_shape()[-1])
             expected_outputs, outputs, actions = self.create_ilpo(inputs, out_channels)
 
+            # inputs: s
+            # targets: s_prime
+            # output: s_prime_pred
+            # expected outspus: s_prime given transition z
+
+            delta = slim.flatten(targets - inputs) # Difference between s_t and s_t+1, target that we want to predict
+            # Test2
+            #expected_outputs = expected_outputs - inputs
+
             # compute loss on expected next state.
-            delta = slim.flatten(targets - inputs)
+            # expected outputs contains expected next stat
+
+            # Basline
             gen_loss_exp = tf.reduce_mean(
                 tf.reduce_sum(tf.losses.mean_squared_error(delta, slim.flatten(expected_outputs),
                                                    reduction=tf.losses.Reduction.NONE), axis=1))
@@ -109,12 +120,12 @@ class ILPO():
             # compute loss on min next state.
             all_loss = []
 
+            # outputs contains for each possible action a generator for the next state
             for out in outputs:
                 all_loss.append(tf.reduce_sum(
                     tf.losses.mean_squared_error(delta, slim.flatten(out),
                     reduction=tf.losses.Reduction.NONE),
                     axis=1))
-
             stacked_min_loss = tf.stack(all_loss, axis=-1)
             gen_loss_min = tf.reduce_mean(tf.reduce_min(stacked_min_loss, axis=1))
 

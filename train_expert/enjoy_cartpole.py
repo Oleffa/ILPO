@@ -8,14 +8,14 @@ DEFAULT = .75
 RANDOM = DEFAULT
 
 ENV = "CartPole-v1"
-FILE = "final_models/cartpole/cartpole.txt"
-BC_FILE = "final_models/cartpole_bc/cartpole_bc.txt"
+FILE = "final_models/cartpole.txt"
+BC_FILE = "final_models/cartpole_bc.txt"
 MODEL = "final_models/cartpole_model.pkl"
 
 
 def main():
     env = gym.make(ENV)
-    act = deepq.load(MODEL)
+    act = deepq.load_act(MODEL)
     steps = 0
     outfile = open(FILE, 'w')
     bcfile = open(BC_FILE, 'w')

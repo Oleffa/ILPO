@@ -106,14 +106,15 @@ class Policy(VectorILPO):
 
     def P(self, state):
         """Returns the next_state probabilities for a state."""
-
+        # P is basically running the latent policy of the ilpo model to get the latent action
         return sess.run(self.model.actions, feed_dict={self.inputs: [state]})[0]
 
     def greedy(self, state):
         """Returns the greedy remapped action for a state."""
-
         p_state = self.P(state)
+        # Select the argmax, the most likely latent action
         action = np.argmax(p_state)
+        # Run it through the remapping network with embedded state and action
         remapped_action = self.sess.run(self.action_label, feed_dict={self.state: [state], self.fake_action: [action]})[0]
 
         if self.verbose:
@@ -128,6 +129,7 @@ class Policy(VectorILPO):
         obs = game.reset()
 
         while not terminal:
+            #game.render()
             action = self.greedy(obs)
             obs, reward, terminal, _ = game.step(action)
             total_reward += reward
@@ -168,6 +170,7 @@ class Policy(VectorILPO):
                 action = game.action_space.sample()
 
             obs, reward, terminal, _ = game.step(action)
+            # This gives the z that leads to the most similar next state
             fake_action = self.min_action(prev_obs, action, obs)
 
             D.append((prev_obs, action, fake_action))
