@@ -77,13 +77,15 @@ def bias_variable(shape):
 
 def fully_connected(inputs, n_outputs, reuse=False, scope=None):
     inputs = slim.flatten(inputs)
-
     return slim.fully_connected(inputs, n_outputs, activation_fn=None, reuse=reuse, scope=scope)
 
+    """
     with tf.variable_scope("fc"):
+        import pdb; pdb.set_trace()
         w_fc = weight_variable([int(inputs.shape[-1]), n_outputs])
         b_fc = bias_variable([n_outputs])
         return tf.matmul(inputs, w_fc) + b_fc
+    """
 
 
 def lrelu(x, a):

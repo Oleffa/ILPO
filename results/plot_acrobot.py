@@ -4,7 +4,7 @@ import seaborn as sns
 import matplotlib
 from scipy import signal
 ENV = "acrobot"
-NAME = "results/" + ENV + ".png"
+NAME = 'Acrobot'
 
 EXPERT = -96.85
 CLONE = -101.93
@@ -31,16 +31,29 @@ def getdata(name):
 # Load the data.
 sns.set(rc={'figure.figsize':(10,9)})
 
-results_1, time_1 = getdata("results/" + ENV + "_bco/")
-results_2, time_2 = getdata("results/" + ENV + "/")
+results_1, time_1 = getdata("/home/oli/workspace/LFO/ilpo/models/2021_05_18_acrobot/acrobot_0/results/")
+results_2, time_2 = getdata("/home/oli/workspace/LFO/ilpo/models/2021_05_18_acrobot/acrobot_100/results/")
+results_3, time_3 = getdata("/home/oli/workspace/LFO/ilpo/models/2021_05_18_acrobot/acrobot_10000/results/")
+results_4, time_4 = getdata("./2021_05_18_acrobot/acrobot_0/results/")
+results_5, time_5 = getdata("./2021_05_18_acrobot/acrobot_100/results/")
+results_6, time_6 = getdata("./2021_05_18_acrobot/acrobot_10000/results/")
 
 fig = plt.figure()
 # Plot each line.
 sns.tsplot(
-    condition='ILPO', time=time_2, data=results_2, color='m', linestyle='-', err_style='ci_band', interpolate=True, legend=True)
+    condition='ILPO_ours_0', time=time_1, data=results_1, color='b', linestyle='-', err_style='ci_band', interpolate=True, legend=True)
 
 sns.tsplot(
-    condition='BCO', time=time_1, data=results_1, color='b', linestyle='-', err_style='ci_band', interpolate=True, legend=True)
+    condition='ILPO_ours_100', time=time_2, data=results_2, color='m', linestyle='-', err_style='ci_band', interpolate=True, legend=True)
+sns.tsplot(
+    condition='ILPO_ours_10000', time=time_2, data=results_3, color='m', linestyle='-', err_style='ci_band', interpolate=True, legend=True)
+
+sns.tsplot(
+    condition='ILPO_0', time=time_1, data=results_4, color='b', linestyle='-', err_style='ci_band', interpolate=True, legend=True)
+sns.tsplot(
+    condition='ILPO_100', time=time_1, data=results_5, color='b', linestyle='-', err_style='ci_band', interpolate=True, legend=True)
+sns.tsplot(
+    condition='ILPO_10000', time=time_1, data=results_6, color='b', linestyle='-', err_style='ci_band', interpolate=True, legend=True)
 
 plt.ylabel("Average Episodic Reward",fontsize=30)
 plt.xlabel("Training Steps",fontsize=30)

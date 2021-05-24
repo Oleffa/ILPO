@@ -3,10 +3,8 @@ from ilpo import ILPO
 from utils import *
 import sys
 sys.path.append(".")
-import environments
 
 CROP_SIZE = 128
-
 
 class ImageILPO(ILPO):
     def process_inputs(self, inputs):

@@ -3,9 +3,11 @@ from utils import *
 from vector_ilpo import VectorILPO
 from collections import deque
 import gym
-import cv2
 import os
 import random
+import sys
+sys.path.append('/media/oli/LinuxData/VAEToolbox/datasets/pong')
+import wimblepong
 
 sess = tf.Session()
 
@@ -34,9 +36,10 @@ class Policy(VectorILPO):
         self.action_label, loss = self.action_remap_net(self.state, self.action, self.fake_action)
 
         self.loss_summary = tf.summary.scalar("policy_loss", tf.squeeze(loss))
-        if not experiment:
-            self.reward_summary = tf.summary.scalar("reward", self.reward[0])
-            self.summary_writer = tf.summary.FileWriter("policy_logs", graph=tf.get_default_graph())
+
+        logdir = args.exp_dir + "/policy_logs"
+        self.reward_summary = tf.summary.scalar("reward", self.reward[0])
+        self.summary_writer = tf.summary.FileWriter(logdir, graph=tf.get_default_graph())
 
         self.train_step = tf.train.AdamOptimizer(args.policy_lr).minimize(loss)
 
@@ -122,23 +125,49 @@ class Policy(VectorILPO):
 
         return np.argmax(remapped_action)
 
+    """
     def eval_policy(self, game, t):
-        """Evaluate the policy."""
-        terminal = False
+        #total_reward = 0
+        games = 1
+        print("Evaluating policy at t={} with {} games".format(t, games))
         total_reward = 0
-        obs = game.reset()
 
-        while not terminal:
-            #game.render()
-            action = self.greedy(obs)
-            obs, reward, terminal, _ = game.step(action)
-            total_reward += reward
+        for g in range(games):
+            obs = game.reset()
+            terminal = False
+            while not terminal:
+                #game.render()
+                action = self.greedy(obs)
+                obs, reward, terminal, _ = game.step(action)
+                total_reward += reward
+        total_reward /= games
+        print("reward: ", total_reward)
 
-        if not self.experiment:
-            reward_summary = sess.run([self.reward_summary], feed_dict={self.reward: [total_reward]})[0]
-            self.summary_writer.add_summary(reward_summary, t)
-        else:
-            self.exp_writer.write(str(t) + "," + str(total_reward) + "\n")
+        reward_summary = sess.run([self.reward_summary], feed_dict={self.reward: [total_reward]})[0]
+        self.summary_writer.add_summary(reward_summary, t)
+        self.exp_writer.write(str(t) + "," + str(total_reward) + "\n")
+    """
+
+    def eval_policy(self, game, t):
+        games = 30
+        print("Evaluating policy at t={} with {} games".format(t, games))
+        wins = 0
+
+        for g in range(games):
+            obs = game.reset()
+            terminal = False
+            while not terminal:
+                #game.render()
+                action = self.greedy(obs)
+                obs, reward, terminal, _ = game.step(action)
+                if reward == 10:
+                    wins += 1
+        total_reward = wins / games
+        print("reward: ", total_reward)
+
+        reward_summary = sess.run([self.reward_summary], feed_dict={self.reward: [total_reward]})[0]
+        self.summary_writer.add_summary(reward_summary, t)
+        self.exp_writer.write(str(t) + "," + str(total_reward) + "\n")
 
     def run_policy(self, seed):
         """Run the policy."""
@@ -151,10 +180,12 @@ class Policy(VectorILPO):
         terminal = False
         D = deque()
 
-        for t in range(0, 1000):
-            print(t)
+
+        for t in range(0, 1500):
+            #print(t)
             #game.render()
 
+            # Test empty dequeu after reaching batchsize
             if len(D) > 50000:
                 D.popleft()
 
@@ -186,8 +217,7 @@ class Policy(VectorILPO):
                     self.action: action_batch,
                     self.fake_action: fake_action_batch})
 
-                if not self.experiment:
-                    self.summary_writer.add_summary(loss_summary, t)
+                self.summary_writer.add_summary(loss_summary, t)
 
             if t % 50 == 0:
                 self.eval_policy(game, t)
@@ -210,7 +240,6 @@ for exp in range(0, 50):
     random.seed(exp)
 
     with sess.as_default():
-        ilpo = Policy(sess=sess, shape=[None, args.n_dims], use_encoding=False, verbose=False, experiment=True, exp_writer=exp_writer)
+        ilpo = Policy(sess=sess, shape=[None, args.n_dims], use_encoding=False, verbose=False, experiment=False, exp_writer=exp_writer)
         ilpo.run_policy(seed=exp)
         exp_writer.close()
-
