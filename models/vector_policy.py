@@ -6,7 +6,8 @@ import gym
 import os
 import random
 import sys
-sys.path.append('/media/oli/LinuxData/VAEToolbox/datasets/pong')
+#sys.path.append('/media/oli/LinuxData/VAEToolbox/datasets/pong')
+sys.path.append('/media/veracrypt4/VAEToolbox/datasets/pong')
 import wimblepong
 
 sess = tf.Session()
@@ -95,14 +96,21 @@ class Policy(VectorILPO):
         """Network for remapping incorrect action labels."""
 
         with tf.variable_scope("action_remap"):
+            # Get Embedding lrelu(E)
             fake_state_encoding = lrelu(slim.flatten(self.create_encoder(state)[-1]), .2)
+            # self.fake_state_encoding 
+            # One hot encode z_min
             fake_action_one_hot = tf.one_hot(fake_action, args.n_actions)
+            # Encode z_min -> lrelu
             fake_action_one_hot = lrelu(fully_connected(fake_action_one_hot, int(fake_state_encoding.shape[-1])), .2)
             real_action_one_hot = tf.one_hot(action, args.real_actions, dtype="int32")
             fake_state_action = tf.concat([fake_state_encoding, fake_action_one_hot], axis=-1)
+            # This is pretty much the mapping from z space to true actions
+            # =======  remapping_network ======
             prediction = lrelu(fully_connected(fake_state_action, 64), .2)
             prediction = lrelu(fully_connected(prediction, 32), .2)
             prediction = fully_connected(prediction, args.real_actions)
+            # ======= L_map ========
             loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=real_action_one_hot, logits=prediction))
 
             return tf.nn.softmax(prediction), loss
@@ -125,7 +133,6 @@ class Policy(VectorILPO):
 
         return np.argmax(remapped_action)
 
-    """
     def eval_policy(self, game, t):
         #total_reward = 0
         games = 1
@@ -146,10 +153,10 @@ class Policy(VectorILPO):
         reward_summary = sess.run([self.reward_summary], feed_dict={self.reward: [total_reward]})[0]
         self.summary_writer.add_summary(reward_summary, t)
         self.exp_writer.write(str(t) + "," + str(total_reward) + "\n")
-    """
 
+    """
     def eval_policy(self, game, t):
-        games = 30
+        games = 1
         print("Evaluating policy at t={} with {} games".format(t, games))
         wins = 0
 
@@ -168,6 +175,7 @@ class Policy(VectorILPO):
         reward_summary = sess.run([self.reward_summary], feed_dict={self.reward: [total_reward]})[0]
         self.summary_writer.add_summary(reward_summary, t)
         self.exp_writer.write(str(t) + "," + str(total_reward) + "\n")
+    """
 
     def run_policy(self, seed):
         """Run the policy."""
@@ -181,7 +189,8 @@ class Policy(VectorILPO):
         D = deque()
 
 
-        for t in range(0, 1500):
+        #for t in range(0, 1500):
+        for t in range(0, 500):
             #print(t)
             #game.render()
 
@@ -219,7 +228,7 @@ class Policy(VectorILPO):
 
                 self.summary_writer.add_summary(loss_summary, t)
 
-            if t % 50 == 0:
+            if t % 10 == 0:
                 self.eval_policy(game, t)
                 terminal = True
 
