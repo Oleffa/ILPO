@@ -87,7 +87,6 @@ class ILPO():
         for a in range(args.n_actions):
             expected_states += tf.multiply(tf.stop_gradient(slim.flatten(outputs[a])), tf.expand_dims(action_prediction[:, a], -1))
         expected_states = tf.reshape(expected_states, shape)
-
         return (expected_states, outputs, action_prediction)
 
     def create_model(self, inputs, targets):

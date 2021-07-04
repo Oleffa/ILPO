@@ -4,57 +4,104 @@ import seaborn as sns
 import matplotlib
 matplotlib.use('TkAgg')
 
-p1 = '/media/veracrypt4/ILPO/workspace/2021_06_01_pong/'
-files_ilpo = [p1 + 'pong_0/results/',
-        p1 + 'pong_1/results/',
-        p1 + 'pong_10/results/',
-        p1 + 'pong_100/results/',
-        p1 + 'pong_1000/results/',
-        p1 + 'pong_10000/results/',
-        p1 + 'pong_655/results/',
-        p1 + 'pong_867/results/']
-p2 = '/media/veracrypt4/ILPO/models/2021_06_01_pong/'
-files_ours = [p2 + 'pong_0/results/',
-        p2 + 'pong_1/results/',
-        p2 + 'pong_10/results/',
-        p2 + 'pong_100/results/',
-        p2 + 'pong_1000/results/',
-        p2 + 'pong_10000/results/',
-        p2 + 'pong_655/results/',
-        p2 + 'pong_867/results/']
+EXPERT = 0.74
+NAME = "results/cartpole.png"
+exp = 1
+experiments = 200
+timesteps = 30
+
 """
-p1 = '/media/veracrypt4/ILPO/workspace/2021_06_01_cartpole/'
-files_ilpo = [p1 + 'cartpole_0/results/',
-        p1 + 'cartpole_1/results/',
-        p1 + 'cartpole_10/results/',
-        p1 + 'cartpole_100/results/']
-p2 = '/media/veracrypt4/ILPO/models/2021_06_01_cartpole/'
-files_ours = [p2 + 'cartpole_0/results/',
-        p2 + 'cartpole_1/results/',
-        p2 + 'cartpole_10/results/',
-        p2 + 'cartpole_100/results/']
-"""
-"""
-p1 = '/media/veracrypt4/ILPO/workspace/2021_06_01_acrobot/'
-files_ilpo = [p1 + 'acrobot_0/results/',
-        p1 + 'acrobot_1/results/',
-        p1 + 'acrobot_10/results/',
-        p1 + 'acrobot_100/results/']
-p2 = '/media/veracrypt4/ILPO/models/2021_06_01_acrobot/'
-files_ours = [p2 + 'acrobot_0/results/',
-        p2 + 'acrobot_1/results/',
-        p2 + 'acrobot_10/results/',
-        p2 + 'acrobot_100/results/']
+NAME = "results/cartpole.png"
+exp = 3
+experiments = 50
+timesteps = 50
 """
 
-EXPERT = 0.74
+if exp == 1:
+    p1 = '/media/oli/LinuxData/ILPO/workspace/2021_06_01_pong/'
+    files_ilpo = [p1 + 'pong_0/results/',
+            p1 + 'pong_1/results/',
+            p1 + 'pong_10/results/',
+            p1 + 'pong_100/results/',
+            p1 + 'pong_1000/results/',
+            p1 + 'pong_10000/results/',
+            p1 + 'pong_1234/results/',
+            p1 + 'pong_1337/results/',
+            p1 + 'pong_420/results/',
+            p1 + 'pong_655/results/',
+            p1 + 'pong_69/results/',
+            p1 + 'pong_867/results/']
+    #p2 = '/media/oli/LinuxData/ILPO/models/2021_06_01_pong/'
+    p2 = '/media/oli/LinuxData/ILPO/models/2021_06_14_pong/'
+    #p2 = '/media/oli/LinuxData/ILPO/models/2021_06_21_pong/'
+    files_ours = [p2 + 'pong_0/results/',
+            p2 + 'pong_1/results/',
+            p2 + 'pong_10/results/',
+            p2 + 'pong_100/results/',
+            p2 + 'pong_1000/results/',
+            p2 + 'pong_10000/results/',
+            p2 + 'pong_1234/results/',
+            p2 + 'pong_1337/results/',
+            p2 + 'pong_420/results/',
+            p2 + 'pong_655/results/',
+            p2 + 'pong_69/results/',
+            p2 + 'pong_879/results/']
+            #p2 + 'pong_867/results/']
+elif exp == 2:
+    p1 = '/media/oli/LinuxData/ILPO/workspace/2021_06_03_pong/'
+    files_ilpo = [p1 + 'pong_0/results/',
+            p1 + 'pong_1/results/',
+            p1 + 'pong_10/results/',
+            p1 + 'pong_100/results/',
+            p1 + 'pong_1000/results/',
+            p1 + 'pong_10000/results/',
+            p1 + 'pong_1234/results/',
+            p1 + 'pong_1337/results/',
+            p1 + 'pong_420/results/',
+            p1 + 'pong_655/results/',
+            p1 + 'pong_69/results/',
+            p1 + 'pong_867/results/']
+
+    p2 = '/media/oli/LinuxData/ILPO/models/2021_06_14_pong/'
+    files_ours = [p2 + 'pong_0/results/',
+            p2 + 'pong_1/results/',
+            p2 + 'pong_10/results/',
+            p2 + 'pong_100/results/',
+            p2 + 'pong_1000/results/',
+            p2 + 'pong_10000/results/',
+            p2 + 'pong_1234/results/',
+            p2 + 'pong_1337/results/',
+            p2 + 'pong_420/results/',
+            p2 + 'pong_655/results/',
+            p2 + 'pong_69/results/',
+            p2 + 'pong_867/results/']
+elif exp == 3:
+    p1 = '/media/oli/LinuxData/ILPO/workspace/2021_06_01_cartpole/'
+    files_ilpo = [p1 + 'cartpole_0/results/',
+            p1 + 'cartpole_1/results/',
+            p1 + 'cartpole_10/results/',
+            p1 + 'cartpole_100/results/']
+    p2 = '/media/oli/LinuxData/ILPO/models/2021_06_14_cartpole/'
+    files_ours = [p2 + 'cartpole_0/results/',
+            p2 + 'cartpole_1/results/',
+            p2 + 'cartpole_10/results/',
+            p2 + 'cartpole_100/results/']
+elif exp == 4:
+    p1 = '/media/oli/LinuxData/ILPO/workspace/2021_06_01_acrobot/'
+    files_ilpo = [p1 + 'acrobot_0/results/',
+            p1 + 'acrobot_1/results/',
+            p1 + 'acrobot_10/results/',
+            p1 + 'acrobot_100/results/']
+    p2 = '/media/oli/LinuxData/ILPO/models/2021_06_14_acrobot/'
+    files_ours = [p2 + 'acrobot_0/results/',
+            p2 + 'acrobot_1/results/',
+            p2 + 'acrobot_10/results/',
+            p2 + 'acrobot_100/results/']
+
 
 labels = ['ilpo', 'ours']
 colors = ['tab:orange', 'tab:blue']
 
-NAME = "results/cartpole.png"
-experiments = 200
-timesteps = 30
 
 def getdata(files, experiments):
     out = np.zeros((len(files), experiments, timesteps))

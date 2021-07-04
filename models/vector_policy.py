@@ -6,8 +6,7 @@ import gym
 import os
 import random
 import sys
-#sys.path.append('/media/oli/LinuxData/VAEToolbox/datasets/pong')
-sys.path.append('/media/veracrypt4/VAEToolbox/datasets/pong')
+sys.path.append('/media/oli/LinuxData/datasets/pong')
 import wimblepong
 
 sess = tf.Session()
@@ -156,7 +155,7 @@ class Policy(VectorILPO):
 
     """
     def eval_policy(self, game, t):
-        games = 1
+        games = 10
         print("Evaluating policy at t={} with {} games".format(t, games))
         wins = 0
 
@@ -189,8 +188,8 @@ class Policy(VectorILPO):
         D = deque()
 
 
-        #for t in range(0, 1500):
-        for t in range(0, 500):
+        for t in range(0, 1500):
+        #for t in range(0, 500):
             #print(t)
             #game.render()
 
@@ -228,7 +227,7 @@ class Policy(VectorILPO):
 
                 self.summary_writer.add_summary(loss_summary, t)
 
-            if t % 10 == 0:
+            if t % 50 == 0:
                 self.eval_policy(game, t)
                 terminal = True
 

@@ -240,6 +240,7 @@ class ImageILPO(ILPO):
         config.gpu_options.allow_growth = True
 
         with sv.managed_session(config=config) as sess:
+            sess.graph.finalize()
             print("parameter_count =", sess.run(parameter_count))
 
             if args.checkpoint is not None:
@@ -306,7 +307,7 @@ class ImageILPO(ILPO):
                     print("progress  epoch %d  step %d  image/sec %0.1f  remaining %dm" % (
                     train_epoch, train_step, rate, remaining / 60))
                     print("gen_loss_L1", results["gen_loss_L1"])
-
+                print("hi, {}, step: {}".format(args.save_freq, step), should(args.save_freq))
                 if should(args.save_freq):
                     print("saving model")
                     saver.save(sess, os.path.join(args.output_dir, "model"), global_step=sv.global_step)
