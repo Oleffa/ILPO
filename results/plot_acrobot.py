@@ -34,9 +34,6 @@ sns.set(rc={'figure.figsize':(10,9)})
 results_1, time_1 = getdata("/home/oli/workspace/LFO/ilpo/models/2021_05_18_acrobot/acrobot_0/results/")
 results_2, time_2 = getdata("/home/oli/workspace/LFO/ilpo/models/2021_05_18_acrobot/acrobot_100/results/")
 results_3, time_3 = getdata("/home/oli/workspace/LFO/ilpo/models/2021_05_18_acrobot/acrobot_10000/results/")
-results_4, time_4 = getdata("./2021_05_18_acrobot/acrobot_0/results/")
-results_5, time_5 = getdata("./2021_05_18_acrobot/acrobot_100/results/")
-results_6, time_6 = getdata("./2021_05_18_acrobot/acrobot_10000/results/")
 
 fig = plt.figure()
 # Plot each line.
