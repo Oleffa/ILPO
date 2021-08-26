@@ -132,6 +132,45 @@ class Policy(VectorILPO):
 
         return np.argmax(remapped_action)
 
+    def eval_state_space(self, game, t):
+        steps = 50000
+        i = 0
+        outfile = open('./lander_states_{}.txt'.format(t), 'w')
+        #outfile = open('./pong_states_random.txt'.format(t), 'w')
+        while i < steps:
+            obs = game.reset()
+            terminal = False
+            while not terminal:
+                state_1 = obs
+                action = self.greedy(obs)
+                #action = game.action_space.sample()
+                #action = 0
+                obs, reward, terminal, _ = game.step(action)
+                state_2 = obs
+                #Write
+                to_write = '['
+                for w in state_1:
+                    to_write += str(w) + ','
+                to_write = to_write[:-1]
+                to_write += ']'
+
+                outfile.write(to_write)
+                outfile.write(" ")
+                to_write = '['
+
+                for w in state_2:
+                    to_write += str(w) + ','
+                to_write = to_write[:-1]
+                to_write += ']'
+
+                outfile.write(to_write)
+                outfile.write("\n")
+
+                i += 1
+                if i >= steps:
+                    terminal = True
+        outfile.close()
+
     def eval_policy(self, game, t):
         #total_reward = 0
         games = 1
@@ -152,10 +191,9 @@ class Policy(VectorILPO):
         reward_summary = sess.run([self.reward_summary], feed_dict={self.reward: [total_reward]})[0]
         self.summary_writer.add_summary(reward_summary, t)
         self.exp_writer.write(str(t) + "," + str(total_reward) + "\n")
-
     """
     def eval_policy(self, game, t):
-        games = 10
+        games = 1
         print("Evaluating policy at t={} with {} games".format(t, games))
         wins = 0
 
@@ -187,9 +225,10 @@ class Policy(VectorILPO):
         terminal = False
         D = deque()
 
-
-        for t in range(0, 1500):
-        #for t in range(0, 500):
+        # Lunar Lander, pong
+        #for t in range(0, 1500):
+        # Acrobot, cartpole
+        for t in range(0, 500):
             #print(t)
             #game.render()
 
@@ -227,9 +266,11 @@ class Policy(VectorILPO):
 
                 self.summary_writer.add_summary(loss_summary, t)
 
-            if t % 50 == 0:
+            if t % 10 == 0:
                 self.eval_policy(game, t)
                 terminal = True
+                #self.eval_state_space(game, t)
+        #exit()
 
 if not os.path.exists(args.exp_dir):
     os.makedirs(args.exp_dir)

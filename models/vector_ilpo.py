@@ -77,13 +77,12 @@ class VectorILPO(ILPO):
 
         layers = []
 
-        # encoder_1: [batch, 256, 256, in_channels] => [batch, 128, 128, ngf]
         with tf.variable_scope("encoder_1"):
-            output = fully_connected(state, args.ngf)
+            output = fully_connected(state, int(args.ngf*0.5))
             layers.append(output)
 
         layer_specs = [
-            args.ngf * 2,
+            args.ngf,
         ]
 
         for out_channels in layer_specs:
@@ -102,7 +101,7 @@ class VectorILPO(ILPO):
         with tf.variable_scope("decoder_1"):
             inp = s_t_layers[-1]
             rectified = lrelu(inp, 0.2)
-            output = fully_connected(rectified, args.ngf)
+            output = fully_connected(rectified, int(args.ngf*0.5))
             s_t_layers.append(output)
 
         with tf.variable_scope("decoder_2"):
