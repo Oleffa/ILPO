@@ -102,7 +102,7 @@ class ImageILPO(ILPO):
 
         # encoder_1: [batch, 256, 256, in_channels] => [batch, 128, 128, ngf]
         with tf.variable_scope("encoder_1"):
-            output = conv(state, args.ngf, stride=2)
+            output = conv(state, args.ngf, stride=2) #batch_input, out_channels, stride
             layers.append(output)
 
         layer_specs = [
@@ -200,7 +200,6 @@ class ImageILPO(ILPO):
                                               name="min_output_pngs"),
 
             }
-
         # summaries
         with tf.name_scope("inputs_summary"):
             tf.summary.image("inputs", converted_inputs, 3)
@@ -288,7 +287,6 @@ class ImageILPO(ILPO):
                 if should(args.summary_freq):
                     print("recording summary")
                     sv.summary_writer.add_summary(results["summary"], results["global_step"])
-
                 if should(args.display_freq):
                     print("saving display images")
                     filesets = save_images(results["display"], step=results["global_step"])
@@ -307,7 +305,7 @@ class ImageILPO(ILPO):
                     print("progress  epoch %d  step %d  image/sec %0.1f  remaining %dm" % (
                     train_epoch, train_step, rate, remaining / 60))
                     print("gen_loss_L1", results["gen_loss_L1"])
-                print("hi, {}, step: {}".format(args.save_freq, step), should(args.save_freq))
+
                 if should(args.save_freq):
                     print("saving model")
                     saver.save(sess, os.path.join(args.output_dir, "model"), global_step=sv.global_step)

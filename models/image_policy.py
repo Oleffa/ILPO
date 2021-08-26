@@ -1,35 +1,31 @@
 """Runs a trained ILPO policy in an online manner and concurrently fixes action inconsistencies."""
-import gym
-env = gym.make("CartPole-v1")
-#env.render()
 
 from utils import *
 from image_ilpo import ImageILPO
 from collections import deque
 import gym
 import cv2
-import os
+import os 
 import coinrun.main_utils as utils
 from coinrun import setup_utils, policies, wrappers, ppo2
 from coinrun.config import Config
-#from gym.envs.classic_control import rendering
+from gym.envs.classic_control import rendering
 
 utils.setup_mpi_gpus()
-setup_utils.setup_and_load()
+setup_utils.setup_and_load(use_cmd_line_args=False, num_envs=1, num_levels=1, set_seed=0, is_high_res=True, paint_vel_info=0)
 game = utils.make_general_env(1)
 game = wrappers.add_final_wrappers(game)
-game.reset()
 
-args.checkpoint = 'final_coin_ilpo'
-args.exp_dir = 'results/final_coin'
-args.n_actions = 4
-args.batch_size = 100
-args.real_actions = 7
-args.policy_lr = .001
-args.ngf = 15
-EXPLORE = 1000
+#args.checkpoint = 'final_coin_ilpo'
+#args.exp_dir = 'results/final_coin'
+#args.n_actions = 4
+#args.batch_size = 100
+#args.real_actions = 7
+#args.policy_lr = .001
+#args.ngf = 15
+EXPLORE = 400#1000
 FINAL_EPSILON = .2 # final value of epsilon
-INITIAL_EPSILON = .2 # starting value of epsilon
+INITIAL_EPSILON = .5 # starting value of epsilon
 COLLECT = 0
 
 class Policy(ImageILPO):
@@ -80,7 +76,7 @@ class Policy(ImageILPO):
         sess.run(tf.variables_initializer(policy_var_list))
 
         self.deprocessed_outputs = [tf.image.convert_image_dtype(deprocess(output), dtype=tf.uint8, saturate=True) for output in self.model.outputs]
-        #self.viewer = rendering.SimpleImageViewer()
+        self.viewer = rendering.SimpleImageViewer()
 
     def min_action(self, state, action, next_state):
         """Find the minimum action for training."""
@@ -148,8 +144,8 @@ class Policy(ImageILPO):
         return np.argmax(remapped_action)
 
     def render(self, obs):
-        pass
         #self.viewer.imshow(obs)
+        game.render()
 
     def eval_policy(self, game, t):
         """Evaluate the policy."""
@@ -201,8 +197,8 @@ class Policy(ImageILPO):
 
         prev_obs = obs.copy()
 
-        for t in range(0, 2200):
-            self.render(obs)
+        for t in range(0, 1200):
+            #self.render(obs)
 
             if t % 200 == 0 and t >= COLLECT:
                 #print("Evaluating", t)
@@ -254,8 +250,7 @@ class Policy(ImageILPO):
                 if not self.experiment:
                     self.summary_writer.add_summary(loss_summary, t)
 
-            print(t)
-            print("Epsilon", epsilon)
+            print("Epsilon: {}, t: {}".format(epsilon, t))
 
 
 if not os.path.exists(args.exp_dir):
