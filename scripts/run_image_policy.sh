@@ -1,3 +1,3 @@
 #!/bin/bash
-python models/image_policy.py --mode test --ngf 15 --n_actions 12 --batch_size 32 --checkpoint workspace/2021_06_21_pong_vis/pong_0/ilpo --exp_dir workspace/2021_06_21_pong_vis/pong_0/results/ --env WimblepongVisualSimpleAI-v0 --policy_lr .0009
+python models/image_policy.py --mode test --ngf 15 --n_actions 5 --real_actions 7 --batch_size 32 --checkpoint /home/oli/workspace/ilpo/workspace/2021_08_24_coinrun/cr_0/ilpo --exp_dir /home/oli/workspace/ilpo/workspace/2021_08_24_coinrun/cr_0/results/ --policy_lr .001
 
