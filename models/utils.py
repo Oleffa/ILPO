@@ -39,7 +39,7 @@ parser.add_argument("--lab_colorization", action="store_true", help="split input
 parser.add_argument("--batch_size", type=int, default=32, help="number of images in batch")
 parser.add_argument("--which_direction", type=str, default="AtoB", choices=["AtoB", "BtoA"])
 parser.add_argument("--ngf", type=int, default=128, help="number of generator filters in first encoding layer")
-parser.add_argument("--ndf", type=int, default=128, help="number of discriminator filters in first encoding layer")
+#parser.add_argument("--ndf", type=int, default=128, help="number of discriminator filters in first encoding layer")
 parser.add_argument("--flip", dest="flip", action="store_true", help="flip images horizontally")
 parser.add_argument("--no_flip", dest="flip", action="store_false", help="don't flip images horizontally")
 parser.set_defaults(flip=False)
