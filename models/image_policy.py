@@ -23,9 +23,9 @@ game = wrappers.add_final_wrappers(game)
 #args.real_actions = 7
 #args.policy_lr = .001
 #args.ngf = 15
-EXPLORE = 400#1000
+EXPLORE = 1000
 FINAL_EPSILON = .2 # final value of epsilon
-INITIAL_EPSILON = .5 # starting value of epsilon
+INITIAL_EPSILON = .8 # starting value of epsilon
 COLLECT = 0
 
 class Policy(ImageILPO):
@@ -158,9 +158,9 @@ class Policy(ImageILPO):
             steps = 0
             print("Evaluating", evaluation)
 
-            while not terminal[0] and steps < 200:
+            while not terminal[0]# and steps < 200:
                 obs = np.squeeze(obs)
-                self.render(obs)
+                #self.render(obs)
                 obs = cv2.resize(obs, (128, 128))
 
                 if np.random.uniform(0,1) <= .9:
@@ -197,10 +197,10 @@ class Policy(ImageILPO):
 
         prev_obs = obs.copy()
 
-        for t in range(0, 1200):
+        for t in range(0, 1500):
             #self.render(obs)
 
-            if t % 200 == 0 and t >= COLLECT:
+            if t % 100 == 0 and t >= COLLECT:
                 #print("Evaluating", t)
                 self.eval_policy(game, t)
                 obs = np.squeeze(game.reset())
@@ -256,7 +256,7 @@ class Policy(ImageILPO):
 if not os.path.exists(args.exp_dir):
     os.makedirs(args.exp_dir)
 
-for exp in range(0, 50):
+for exp in range(0, 20):
     np.random.seed(exp)
     tf.set_random_seed(exp)
     random.seed(exp)

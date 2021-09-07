@@ -200,6 +200,7 @@ class ImageILPO(ILPO):
                                               name="min_output_pngs"),
 
             }
+
         # summaries
         with tf.name_scope("inputs_summary"):
             tf.summary.image("inputs", converted_inputs, 3)
@@ -239,7 +240,6 @@ class ImageILPO(ILPO):
         config.gpu_options.allow_growth = True
 
         with sv.managed_session(config=config) as sess:
-            sess.graph.finalize()
             print("parameter_count =", sess.run(parameter_count))
 
             if args.checkpoint is not None:
@@ -287,6 +287,7 @@ class ImageILPO(ILPO):
                 if should(args.summary_freq):
                     print("recording summary")
                     sv.summary_writer.add_summary(results["summary"], results["global_step"])
+
                 if should(args.display_freq):
                     print("saving display images")
                     filesets = save_images(results["display"], step=results["global_step"])
@@ -318,3 +319,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

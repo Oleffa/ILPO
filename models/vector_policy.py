@@ -170,7 +170,7 @@ class Policy(VectorILPO):
                 if i >= steps:
                     terminal = True
         outfile.close()
-
+    """
     def eval_policy(self, game, t):
         #total_reward = 0
         games = 1
@@ -212,7 +212,6 @@ class Policy(VectorILPO):
         reward_summary = sess.run([self.reward_summary], feed_dict={self.reward: [total_reward]})[0]
         self.summary_writer.add_summary(reward_summary, t)
         self.exp_writer.write(str(t) + "," + str(total_reward) + "\n")
-    """
 
     def run_policy(self, seed):
         """Run the policy."""
@@ -226,9 +225,9 @@ class Policy(VectorILPO):
         D = deque()
 
         # Lunar Lander, pong
-        #for t in range(0, 1500):
+        for t in range(0, 1500):
         # Acrobot, cartpole
-        for t in range(0, 500):
+        #for t in range(0, 500):
             #print(t)
             #game.render()
 
@@ -266,7 +265,12 @@ class Policy(VectorILPO):
 
                 self.summary_writer.add_summary(loss_summary, t)
 
-            if t % 10 == 0:
+            # Acrobot, cartpole
+            #if t % 10 == 0:
+            # Pong
+            if t % 50 == 0:
+            # Lander
+            #if t % 100 == 0:
                 self.eval_policy(game, t)
                 terminal = True
                 #self.eval_state_space(game, t)
