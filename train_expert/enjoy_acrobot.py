@@ -3,18 +3,18 @@ import numpy as np
 from baselines import deepq
 
 BEST = 1
-DEFAULT = .75
+DEFAULT = 1.0
 RANDOM = DEFAULT
 
 ENV = "Acrobot-v1"
-FILE = "final_models/acrobot/acrobot.txt"
-BC_FILE = "final_models/acrobot_bc/acrobot_bc.txt"
+FILE = "final_models/acrobot.txt"
+BC_FILE = "final_models/acrobot_bc.txt"
 MODEL = "final_models/acrobot_model.pkl"
 
 
 def main():
     env = gym.make(ENV)
-    act = deepq.load(MODEL)
+    act = deepq.load_act(MODEL)
     steps = 0
     outfile = open(FILE, 'w')
     bcfile = open(BC_FILE, 'w')

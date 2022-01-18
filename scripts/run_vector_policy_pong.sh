@@ -113,11 +113,11 @@ seed=10000
 python models/vector_policy.py --mode test --n_actions 12 --ngf $ngf --real_actions 3 --batch_size 32 --checkpoint /media/oli/LinuxData/ILPO/workspace/2021_08_26_pong_large_RLAgent/pong_$seed/ilpo --env WimblepongVectorSimpleAI-v0 --exp_dir /media/oli/LinuxData/ILPO/workspace/2021_08_26_pong_large_RLAgent/pong_$seed/results/ --n_dims 6 --policy_lr 0.002
 seed=1234
 python models/vector_policy.py --mode test --n_actions 12 --ngf $ngf --real_actions 3 --batch_size 32 --checkpoint /media/oli/LinuxData/ILPO/workspace/2021_08_26_pong_large_RLAgent/pong_$seed/ilpo --env WimblepongVectorSimpleAI-v0 --exp_dir /media/oli/LinuxData/ILPO/workspace/2021_08_26_pong_large_RLAgent/pong_$seed/results/ --n_dims 6 --policy_lr 0.002
+COMMENT
 seed=1337
 python models/vector_policy.py --mode test --n_actions 12 --ngf $ngf --real_actions 3 --batch_size 32 --checkpoint /media/oli/LinuxData/ILPO/workspace/2021_08_26_pong_large_RLAgent/pong_$seed/ilpo --env WimblepongVectorSimpleAI-v0 --exp_dir /media/oli/LinuxData/ILPO/workspace/2021_08_26_pong_large_RLAgent/pong_$seed/results/ --n_dims 6 --policy_lr 0.002
 seed=420
 python models/vector_policy.py --mode test --n_actions 12 --ngf $ngf --real_actions 3 --batch_size 32 --checkpoint /media/oli/LinuxData/ILPO/workspace/2021_08_26_pong_large_RLAgent/pong_$seed/ilpo --env WimblepongVectorSimpleAI-v0 --exp_dir /media/oli/LinuxData/ILPO/workspace/2021_08_26_pong_large_RLAgent/pong_$seed/results/ --n_dims 6 --policy_lr 0.002
-COMMENT
 seed=69
 python models/vector_policy.py --mode test --n_actions 12 --ngf $ngf --real_actions 3 --batch_size 32 --checkpoint /media/oli/LinuxData/ILPO/workspace/2021_08_26_pong_large_RLAgent/pong_$seed/ilpo --env WimblepongVectorSimpleAI-v0 --exp_dir /media/oli/LinuxData/ILPO/workspace/2021_08_26_pong_large_RLAgent/pong_$seed/results/ --n_dims 6 --policy_lr 0.002
 seed=655
@@ -128,3 +128,4 @@ seed=187
 python models/vector_policy.py --mode test --n_actions 12 --ngf $ngf --real_actions 3 --batch_size 32 --checkpoint /media/oli/LinuxData/ILPO/workspace/2021_08_26_pong_large_RLAgent/pong_$seed/ilpo --env WimblepongVectorSimpleAI-v0 --exp_dir /media/oli/LinuxData/ILPO/workspace/2021_08_26_pong_large_RLAgent/pong_$seed/results/ --n_dims 6 --policy_lr 0.002
 seed=257
 python models/vector_policy.py --mode test --n_actions 12 --ngf $ngf --real_actions 3 --batch_size 32 --checkpoint /media/oli/LinuxData/ILPO/workspace/2021_08_26_pong_large_RLAgent/pong_$seed/ilpo --env WimblepongVectorSimpleAI-v0 --exp_dir /media/oli/LinuxData/ILPO/workspace/2021_08_26_pong_large_RLAgent/pong_$seed/results/ --n_dims 6 --policy_lr 0.002
+COMMENT

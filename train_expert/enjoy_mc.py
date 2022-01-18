@@ -3,13 +3,14 @@ import numpy as np
 from baselines import deepq
 
 
-DEFAULT = 0.98
+DEFAULT = 1.0
+#DEFAULT = 0.85
 RANDOM = DEFAULT
 
-ENV = "LunarLander-v2"
-FILE = "final_models/ll.txt"
-BC_FILE = "final_models/ll_bc.txt"
-MODEL = "final_models/ll_model.pkl"
+ENV = "MountainCar-v0"
+FILE = "final_models/mc.txt"
+BC_FILE = "final_models/mc_bc.txt"
+MODEL = "final_models/mc_model.pkl"
 
 
 def main():
@@ -25,7 +26,6 @@ def main():
         obs, done = env.reset(), False
         episode_rew = 0
         while not done:
-            env.render()
             state_1 = obs
 
             if np.random.uniform(0,1) <= RANDOM:

@@ -38,6 +38,7 @@ If you have trouble installing baselines on OS X, try running the following comm
 ```Shell
 brew install mpich
 pip install mpi4py
+env MPICC=/usr/bin/mpicc python -m pip install mpi4py (And possibly install python3.7-dev if Python.h is missing)
 ```
 
 ## Collecting expert data 

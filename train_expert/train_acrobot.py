@@ -4,7 +4,7 @@ from baselines import deepq
 
 
 def main():
-    env = gym.make("Acrobot-v0")
+    env = gym.make("Acrobot-v1")
     model = deepq.models.mlp([64])
     act = deepq.learn(
         env,
