@@ -3,9 +3,8 @@ import numpy as np
 from baselines import deepq
 
 
-#DEFAULT = 0.98
 #DEFAULT = 1.0
-DEFAULT = 0.75
+DEFAULT = 0.66
 RANDOM = DEFAULT
 
 ENV = "LunarLander-v2"

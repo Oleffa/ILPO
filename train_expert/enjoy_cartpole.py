@@ -20,7 +20,7 @@ BC_FILE = "final_models/ll_bc_noisy.txt"
 MODEL = "final_models/ll_model.pkl"
 
 
-seq_size = 3
+seq_size = 2
 n = 50000
 
 def main():
@@ -60,14 +60,37 @@ def main():
                     outfile.write(to_write)
                     outfile.write(" ")
 
-                to_write = '['
-                for w in states[-1]:
-                    to_write += str(w) + ','
-                to_write = to_write[:-1]
-                to_write += ']'
-
+                    to_write = '['
+                    for w in s:
+                        to_write += str(w) + ','
+                    to_write = to_write[:-1]
+                    to_write += ']'
                 outfile.write(to_write)
                 outfile.write("\n")
+
+                for s in states[:-1]:
+                    # write to BC file
+                    to_write = '['
+                    for w in s:
+                        to_write += str(w) + ','
+                    to_write = to_write[:-1]
+                    to_write += ']'
+
+                    bcfile.write(to_write)
+                    bcfile.write(" ")
+
+                    bcfile.write("[" + str(action) + "]")
+                    bcfile.write(" ")
+
+                    to_write = '['
+                    for w in s:
+                        to_write += str(w) + ','
+                    to_write = to_write[:-1]
+                    to_write += ']'
+
+                bcfile.write(to_write)
+                bcfile.write("\n")
+
                 states = []
                 steps += 1
 
